@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "striking-scout-428010-r8",
+  "private_key_id": "3f1135b3fbdcae2476c6411291bc94df3aeb1fee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCoKBg6s8T4T/xk\ns0srJWWWV0hvHZwRYNppV6tuMhKEPZ8I+kLWANwR1SZ6Zl3hrch71bMbkxgVenSf\nf3ULDYzjsmHd25dtLDDYjynrDW5N+rUf2hOAcR4/W5GIHBjYT+37NWZcpsT9AUQr\n8hjxs/eyIyCTm7SCi6jxuzaFpRMlALLaqIyaYQm56OPwDga2/7k17VICBJLXLS1+\nOttJwaPZp4ChL7m4Q2N5yqT7tUEwAjw5+zJM1pjtkxhzfLedvEqwYUmANSGCIkCp\nYkbn0WypxvmXsbRDZYiooucnNBFikUol7aNhbVUb1QAa3xFvvANGlyo0xHCyydD+\njYwrRIxrAgMBAAECggEADf/kiy1Am/cLdBYfOcovwR/8JlATQw51Wz7SxWZYIfgA\nCl8iJa9FoxsZTH3C7tEpN0dtKsGzcsT9T51su6JW//VFGOjkHFEzsdvdaWB2tfmb\njw7N/9arENWenJ57jQq+go20EMj2Q9ARV7fx+VwlJjNZeMsw8ItltyusbYehkTtx\nQVR+iI/QZrcZGkJyH4eHXU3Hc5DcqsImQwUmLobX/0sXL79q5itaFVNPV3AUFmSq\nWY48afvlucZTezky+nhwyHeHZN1jR6pIbNKuZW1e2yuStgaSp6LXibv5hc/ncKpH\nsnPyXmYAjWgAlSt7csiu/1aD/VqeaJeyLtfeJYoY3QKBgQDXE9VlLPEBu+GnugOC\nuawYSFl2GRezEa6ddZXhsdOuF1HSP93UxhcM1LAJK1/yq0EXshAPojMQQvevNuxI\nCsGfZbRkFTjbWLeDBm7/EZX40MkEMnjPdRcPt+hpmA23OrOoo5VV1snlHO8WbLFz\nYU0hiHgKkaOTUb/fS3ULoQwjHQKBgQDIJs1nrFMXbWo4XtHPqfOc8p9bobfeI6eR\nuQTCXnG7Yo1uH7LApFZ50X6kCVoTXsTohrvRklvqzk9vw4z2T5NRN/ifbU90kgVR\n/Zv2DyAHzlY6MrNARfN80MCX9BmuD1sNibZcdhwDycplJgPchl5YXJdY0osL8ce+\nXDDYjqaPJwKBgQCC0+y1i53amSfNeAgUp864QqIwhVj2MyZNX65ZSGtj9Ylu5CyS\n9iAlTOb73OeTXHrO6CB+8gIvvRye90DJHcnjpOETFBmuy4ttZydzfoYEgTQVmoIE\nZ8wsYok8WiLVtx570W3QdkP/WxdQQ7O5ZJGfeTzT6P1gapTVRjgfZ8pTPQKBgQCS\nvV/6kiyZEG6/xUStqzwf5QFQfNAA3MMN40fJ+NQJPcfS5Qp4kgOUbDMcsH6JlQFo\nON+aVmNtUrSKjCPcsZqgARkWSV3naObdpcGiNJSXJH+zS1h/1skcyS9qOFxbcIag\n9kXso+sGG/t3DNfn5dtljPyo8jNfHnQC7DQjkPIsIQJ/GEeUwnxqyEXzOpvq3c8l\nAkL2jG3iGc0G8ZrBcuFenPphYxUZpOK3gLxYkhF3bQNl6et1jhh4HcEGz24bqK2i\nrIiPDImU2XtbgOieEUHCi1yTVJlS44voW/ooPSGqTsPJjcZQRQ/R0V6ZIEWRlsuA\ngqlKR4DULb83S28kiyWDCw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "jarvis-pawan@striking-scout-428010-r8.iam.gserviceaccount.com",
+  "client_id": "114790305455325832829",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jarvis-pawan%40striking-scout-428010-r8.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

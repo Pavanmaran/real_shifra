@@ -1,23 +1,24 @@
 import speech_recognition as sr
 import random
-import webbrowser
-from google.cloud import texttospeech
 import os
 import pygame
 import pygame.mixer
 from typing import Optional
+from google.cloud import texttospeech
 import google.generativeai as genai
 
 # Initialize recognizer
 r = sr.Recognizer()
 
-# 1. Set up the environment variable (using the correct API key)
-# Replace 'YOUR_API_KEY' with the actual key from your Google AI Platform project. 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "AIzaSyATtV86B2Hzv9C_jFfF8tFzrdvmtc-q7kY"
+# 1. Set up Google Cloud Text-to-Speech credentials
+# Replace with the actual path to your service account JSON file
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "F:/Myprojects/PythonProjects/Jarvis/key.json"
 
-# 2. Configure the Google AI Python SDK
-genai.configure(api_key=os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
-# Create the model
+# 2. Configure Gemini API with a valid API key
+GEMINI_API_KEY = "your_actual_gemini_api_key_here"  # Replace with your Gemini API key
+genai.configure(api_key=GEMINI_API_KEY)
+
+# Gemini model configuration
 generation_config = {
     "temperature": 1,
     "top_p": 0.95,
@@ -49,54 +50,57 @@ def record_audio() -> Optional[str]:
 
 def shivi_speaks(audio_string: str):
     """Convert text to speech and play it using Google Cloud Text-to-Speech API."""
-    client = texttospeech.TextToSpeechClient()
-
-    input_text = texttospeech.SynthesisInput(text=audio_string)
-
-    # Specify voice settings
-    voice = texttospeech.VoiceSelectionParams(
-        language_code="hi-IN",  # Hindi language
-        ssml_gender=texttospeech.SsmlVoiceGender.MALE  # Male voice
-    )
-
-    # Select the type of audio file you want returned
-    audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3
-    )
-
-    response = client.synthesize_speech(
-        input=input_text, voice=voice, audio_config=audio_config
-    )
-
-    # Save the audio to a file
-    r = random.randint(1, 100000000)
-    audio_file = f'audio-{r}.mp3'
-    with open(audio_file, "wb") as out:
-        out.write(response.audio_content)
-    
-    pygame.mixer.init()
-    pygame.mixer.music.load(audio_file)
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)
-    pygame.mixer.quit()
-    
-    print(audio_string)
-    
     try:
-        os.remove(audio_file)
+        client = texttospeech.TextToSpeechClient()
+
+        input_text = texttospeech.SynthesisInput(text=audio_string)
+
+        # Specify voice settings
+        voice = texttospeech.VoiceSelectionParams(
+            language_code="hi-IN",  # Hindi language
+            ssml_gender=texttospeech.SsmlVoiceGender.MALE  # Male voice
+        )
+
+        # Select the type of audio file you want returned
+        audio_config = texttospeech.AudioConfig(
+            audio_encoding=texttospeech.AudioEncoding.MP3
+        )
+
+        response = client.synthesize_speech(
+            input=input_text, voice=voice, audio_config=audio_config
+        )
+
+        # Save the audio to a file
+        r = random.randint(1, 100000000)
+        audio_file = f'audio-{r}.mp3'
+        with open(audio_file, "wb") as out:
+            out.write(response.audio_content)
+        
+        pygame.mixer.init()
+        pygame.mixer.music.load(audio_file)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            pygame.time.Clock().tick(10)
+        pygame.mixer.quit()
+        
+        print(audio_string)
+        
+        try:
+            os.remove(audio_file)
+        except Exception as e:
+            print(f"Error removing {audio_file}: {e}")
     except Exception as e:
-        print(f"Error removing {audio_file}: {e}")
+        print(f"Text-to-Speech error: {e}")
 
 def query_gemini(input_text: str) -> str:
     """Query the Gemini API for a response."""
-    chat_session = model.start_chat(
-        history=[
-            {"role": "user", "parts": [{"text": input_text}]}
-        ]
-    )
-    response = chat_session.send_message(input_text)
-    return response.text
+    try:
+        chat_session = model.start_chat(history=[{"role": "user", "parts": [{"text": input_text}]}])
+        response = chat_session.send_message(input_text)
+        return response.text
+    except Exception as e:
+        print(f"Gemini API error: {e}")
+        return "Sorry, I couldn't process that."
 
 def respond(voice_data: str):
     """Respond to user's voice command using the Gemini API."""
@@ -104,7 +108,7 @@ def respond(voice_data: str):
     shivi_speaks(gemini_response)
 
 # Main loop
-error_count = 0  # Initialize error counter
+error_count = 0
 
 while True:
     voice_data = record_audio()
@@ -115,7 +119,10 @@ while True:
     else:
         error_count += 1
         if error_count > 2:
-            shivi_speaks("or kya kar rahe ho") and shivi_speaks("Kuch bolo") and shivi_speaks("kya kar rahe ho aap")
+            # Call shivi_speaks sequentially instead of using 'and'
+            shivi_speaks("Or kya kar rahe ho?")
+            shivi_speaks("Kuch bolo")
+            shivi_speaks("Kya kar rahe ho aap?")
             error_count = 0  # Reset error counter after prompting the user
         else:
             print("I didn't get that, listening again...")

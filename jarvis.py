@@ -9,47 +9,6 @@ from difflib import SequenceMatcher
 from typing import Dict, Optional
 import json
 
-"""
-Install the Google AI Python SDK
-
-$ pip install google-generativeai
-
-See the getting started guide for more information:
-https://ai.google.dev/gemini-api/docs/get-started/python
-"""
-
-import os
-
-import google.generativeai as genai
-
-# 1. Set up the environment variable (using the correct API key)
-# Replace 'YOUR_API_KEY' with the actual key from your Google AI Platform project. 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "AIzaSyATtV86B2Hzv9C_jFfF8tFzrdvmtc-q7kY"
-
-# 2. Configure the Google AI Python SDK
-genai.configure(api_key=os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
-# Create the model
-# See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
-generation_config = {
-  "temperature": 1,
-  "top_p": 0.95,
-  "top_k": 64,
-  "max_output_tokens": 8192,
-  "response_mime_type": "text/plain",
-}
-
-model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
-  generation_config=generation_config,
-  # safety_settings = Adjust safety settings
-  # See https://ai.google.dev/gemini-api/docs/safety-settings
-)
-
-chat_session = model.start_chat(
-  history=[
-  ]
-)
-
 # Initialize recognizer
 r = sr.Recognizer()
 
@@ -66,13 +25,13 @@ def find_best_match(input_text: str, prompts: Dict[str, str]) -> Optional[str]:
     max_similarity = 0
     best_match = None
     for prompt in prompts:
-        similarity = SequenceMatcher(None, input_text, prompt).ratio()
+        similarity = SequenceMatcher(None, input_text.lower(), prompt.lower()).ratio()
         if similarity > max_similarity:
             max_similarity = similarity
             best_match = prompt
     return best_match if max_similarity > 0.5 else None
 
-def record_audio() -> str:
+def record_audio() -> Optional[str]:
     """Record user's voice and return the recognized text."""
     with sr.Microphone() as source:
         print("Listening...")
@@ -89,6 +48,7 @@ def record_audio() -> str:
             return None
 
 def shivi_speaks(audio_string: str):
+    """Convert text to speech in Hindi using gTTS."""
     tts = gTTS(text=audio_string, slow=False, lang='hi')
     r = random.randint(1, 100000000)
     audio_file = f'audio-{r}.mp3'
@@ -109,21 +69,19 @@ def shivi_speaks(audio_string: str):
         print(f"Error removing {audio_file}: {e}")
 
 def respond(voice_data: str):
-    """Respond to user's voice command."""
-    # best_match = find_best_match(voice_data, chat_prompts)
-    best_match = chat_session.send_message(voice_data)
+    """Respond to user's voice command using prompts.json."""
+    best_match = find_best_match(voice_data, chat_prompts)
     if best_match:
-        if best_match == "play songs" or best_match == "gaane chalao" or best_match == "gane suna do" or best_match == "gana suna do" or best_match == "songs":
+        if best_match in ["play songs", "gaane chalao", "gane suna do", "gana suna do", "songs"]:
             url = 'https://www.youtube.com/shorts/ELqyInFBM7g'
             webbrowser.get().open(url)
         shivi_speaks(chat_prompts[best_match])
-        if best_match == "stop" or "bye" or "bye shiwani" or "bye shivani":
+        if best_match in ["stop", "bye", "bye shiwani", "bye shivani"]:
             exit()
     else:
         shivi_speaks('Sorry, par samajh nahi aaya, phir se bolo')
 
 # Main loop
-# shivi_speaks('Hello sir! Kaise ho?')
 error_count = 0  # Initialize error counter
 
 while True:
@@ -135,7 +93,10 @@ while True:
     else:
         error_count += 1
         if error_count > 2:
-            shivi_speaks("or kya kar rahe ho") and shivi_speaks("Kuch bolo") and shivi_speaks("kya kar rahe ho aap")
+            # Call shivi_speaks sequentially instead of using 'and'
+            shivi_speaks("Aur kya kar rahe ho?")
+            shivi_speaks("Kuch bolo!")
+            shivi_speaks("Kya kar rahe ho aap?")
             error_count = 0  # Reset error counter after prompting the user
         else:
             print("I didn't get that, listening again...")
